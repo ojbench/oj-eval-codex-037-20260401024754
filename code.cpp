@@ -27,11 +27,18 @@ void Pre() {
 
 // Move to node at index i (0-based). If i == len, returns tail sentinel.
 NODE *move(int i) {
-    NODE *cur = head;
-    for (int j = 0; j <= i; j++) {
-        cur = cur->next; // safe as long as 0 <= i <= len
+    if (i <= 0) return head->next;      // i == 0
+    if (i >= len) return tail;          // i == len
+    // choose direction to minimize steps
+    if (i <= len / 2) {
+        NODE *cur = head->next; // index 0
+        for (int j = 0; j < i; ++j) cur = cur->next;
+        return cur;
+    } else {
+        NODE *cur = tail->pre; // index len-1
+        for (int j = len - 1; j > i; --j) cur = cur->pre;
+        return cur;
     }
-    return cur;
 }
 
 void insert(int i, int x) {
@@ -133,4 +140,3 @@ int main() {
     DoubleLinkList::Clear();
     return 0;
 }
-
